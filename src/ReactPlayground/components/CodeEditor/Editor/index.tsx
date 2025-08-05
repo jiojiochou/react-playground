@@ -49,7 +49,7 @@ export default function Editor(props: Props) {
     return <MonacoEditor
         height={'100%'}
         path={file.name}
-        language={file.language}
+        language={file.language} // 告诉编辑器文件的语言 进行语法高亮
         onMount={handleEditorMount}
         onChange={onChange}
         value={file.value}

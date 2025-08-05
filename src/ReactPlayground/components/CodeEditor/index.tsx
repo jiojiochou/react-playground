@@ -1,16 +1,18 @@
+import { useContext } from "react";
 import Editor from "./Editor";
 import FileNameList from "./FileNameList";
+import { PlaygroundContext } from "../../PlaygroundContext";
+import { debounce } from 'lodash-es'
 
 export default function CodeEditor() {
 
-    const file = {
-        name: 'guang.tsx',
-        value: 'import lodash from "lodash";\n\nconst a = <div>ikun</div>',
-        language: 'typescript'
-    }
+    const { files, selectedFileName, setFiles } = useContext(PlaygroundContext)
 
-    function onEditorChange() {
-        console.log(...arguments);
+    const file = files[selectedFileName]
+
+    function onEditorChange(value?: string) {
+        files[file.name].value = value!
+        setFiles({ ...files })
     }
 
     return (
@@ -18,7 +20,7 @@ export default function CodeEditor() {
             <FileNameList/>
             <Editor 
               file={file}
-              onChange={onEditorChange} 
+              onChange={debounce(onEditorChange, 500)} 
             />
         </div>
     )

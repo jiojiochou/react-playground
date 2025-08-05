@@ -1,11 +1,13 @@
 import ReactPlayground from './ReactPlayground';
-
 import "./assets/styles/App.less"
+import { PlaygroundProvider } from './ReactPlayground/PlaygroundContext';
 
 function App() {
 
   return (
-    <ReactPlayground/>
+    <PlaygroundProvider>
+      <ReactPlayground />
+    </PlaygroundProvider>
   )
 }
 
