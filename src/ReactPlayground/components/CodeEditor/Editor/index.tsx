@@ -1,5 +1,5 @@
 import MonacoEditor, { type OnMount, type EditorProps } from '@monaco-editor/react'
-// import { createATA } from './ata';
+import { createATA } from './ata';
 import { editor } from 'monaco-editor'
 
 export interface EditorFile {
@@ -35,15 +35,15 @@ export default function Editor(props: Props) {
             esModuleInterop: true,
         })
 
-        // const ata = createATA((code, path) => {
-        //     monaco.languages.typescript.typescriptDefaults.addExtraLib(code, `file://${path}`)
-        // })
+        const ata = createATA((code, path) => {
+            monaco.languages.typescript.typescriptDefaults.addExtraLib(code, `file://${path}`)
+        })
 
-        // editor.onDidChangeModelContent(() => {
-        //     ata(editor.getValue());
-        // });
+        editor.onDidChangeModelContent(() => {
+            ata(editor.getValue());
+        });
 
-        // ata(editor.getValue());
+        ata(editor.getValue());
     }
 
     return <MonacoEditor

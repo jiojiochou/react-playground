@@ -3,22 +3,35 @@ import type { File, Files } from '../../PlaygroundContext'
 import { ENTRY_FILE_NAME } from '../../files'
 import type { PluginObj } from '@babel/core';
 
+export const beforeTransformCode = (filename: string, code: string) => {
+    let _code = code
+    const regexReact = /import\s+React/g
+    if ((filename.endsWith('.jsx') || filename.endsWith('.tsx')) && !regexReact.test(code)) {
+      _code = `import React from 'react';\n${code}`
+    }
+    return _code
+}
+
 export const babelTransform = (filename: string, code: string, files: Files) => {
-  let result = ''
-  try {
-    result = transform(code, {
-      presets: ['react', 'typescript'],
-      filename,
-      plugins: [customResolver(files)],
-      retainLines: true
-    }).code!
-  } catch (e) {
-    console.error('编译出错', e);
-  }
-  return result
+    const _code = beforeTransformCode(filename, code);
+    let result = ''
+    try {
+        result = transform(_code, {
+        presets: ['react', 'typescript'],
+        filename,
+        plugins: [customResolver(files)],
+        retainLines: true, // 保留行号
+        }).code!
+    } catch (e) {
+        console.error('编译出错', e);
+    }
+    return result
 }
 
 const getModuleFile = (files: Files, modulePath: string) => {
+    /** 
+     * 1. 处理无后缀名的模块
+     */
     let moduleName = modulePath.split('./').pop() || ''
     if (!moduleName.includes('.')) {
         const realModuleName = Object.keys(files).filter(key => {
