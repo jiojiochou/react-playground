@@ -7,7 +7,7 @@ export default function Header() {
     <div className={styles.header}>
       <div className={styles.logo}>
         <img alt='logo' src={logoSvg}/>
-        <span>React Playground</span>
+        <span>React Playground @by codercsx</span>
       </div>
     </div>
   )
